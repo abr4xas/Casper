@@ -1,0 +1,30 @@
+<aside class="read-next">
+  {% if article.next_article %}
+    <a class="read-next-story" style="background-image: url('{{ article.next_article.cover }}')" href="{{ SITEURL }}/{{ article.next_article.url }}">
+      <section class="post">
+        <h2>{{ article.next_article.title }}</h2>
+        <p>
+          {% if article.next_article.summary %}
+            {{- article.next_article.summary|striptags -}}
+          {% else %}
+            {{- article.next_article.content|striptags|truncate(160, False) -}}
+          {% endif %}
+        </p>
+      </section>
+    </a>
+  {% endif %}
+  {% if article.prev_article %}
+    <a class="read-next-story prev" style="background-image: url('{{ article.prev_article.cover }}')" href="{{ SITEURL }}/{{ article.prev_article.url }}">
+      <section class="post">
+        <h2>{{ article.prev_article.title }}</h2>
+        <p>
+          {% if article.prev_article.summary %}
+            {{- article.prev_article.summary|striptags -}}
+          {% else %}
+            {{- article.prev_article.content|striptags|truncate(160, False) -}}
+          {% endif %}
+        </p>
+      </section>
+    </a>
+  {% endif %}
+</aside>

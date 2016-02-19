@@ -17,7 +17,7 @@
       <footer class="post-meta">
         Publicado por {{ article.author }} en la categoría <strong><a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category }}</a></strong>
         <br>
-        Etiquetas:  {% for tag in article.tags %}<a href="{{ tag.url }}">{{ tag.name | lower }}{% if not loop.last %}, {% endif %}</a>{% endfor %}
+        <strong>Etiquetas:</strong>  {% for tag in article.tags %}<a href="{{ tag.url }}">{{ tag.name | lower }}{% if not loop.last %}, {% endif %}</a>{% endfor %}
         <time class="post-date" itemprop="datePublished" datetime="{{ article.date.isoformat() }}">{{ article.locale_date }}</time>
       </footer>
     </article>

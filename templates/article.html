@@ -1,65 +1,162 @@
 {% extends "base.html" %}
-{% block header_title %}{% endblock %}
-{% block header_image %}{% if article.header_image %}{{ article.header_image }}{% else %}{{ DEFAULT_HEADER_IMAGE }}{% endif %}{% endblock %}
+
+{% block header_image %}{% if article.cover %}{{ article.cover }}{% else %}{{ DEFAULT_HEADER_IMAGE }}{% endif %}{% endblock %}
 {% block scroll %}{% endblock %}
 {% block template_type %}post-template{% endblock %}
+
+{% block title %}{{ article.title|striptags }} - {{ super() }}{% endblock title %}
+
+{% if USE_OPEN_GRAPH %}
+  {% block metatwitter %}
+    <!-- BEGIN metatwitter -->
+    <meta property="og:locale" content="es_MX">
+    <meta property="og:locale:alternate" content="es">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@{{ TWITTER_USERNAME }}">
+    <meta name="twitter:domain" content="{{ DOMAIN }}">
+    <meta name="twitter:creator" content="@{{ TWITTER_USERNAME }}">
+    <meta name="twitter:url" content="{{ SITEURL }}/{{ article.url }}">
+    <meta name="twitter:title" content="{{ article.title|striptags }}">
+    <meta name="twitter:description" content="{% if article.summary %}{{ article.summary|striptags }}{% else %}{{ article.content|striptags|truncate(100, False) }}{% endif %}">
+    <meta name="twitter:image" content="{% if article.cover %}{{ article.cover }}{% else %}{{ ARTICLE_COVER }}{% endif %}">
+    <!-- END metatwitter -->
+  {% endblock metatwitter %}
+
+  {% block metafacebook %}
+    <!-- BEGIN metafacebook -->
+    <meta property="og:site_name" content="{{ SITENAME }} - {{ TAGLINE }}">
+    <meta property="og:locale" content="es_LA">
+    <meta property="fb:app_id" content="{{ OPEN_GRAPH_FB_APP_ID }}">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ article.title|striptags }}">
+    <meta property="og:image" content="{% if article.cover %}{{ article.cover }}{% else %}{{ ARTICLE_COVER }}{% endif %}">
+    <meta property="og:image:type" content="image/jpeg">
+      <meta property="og:image:width" content="1200">
+      <meta property="og:image:height" content="675">
+    <meta property="og:description" content="{% if article.summary %}{{ article.summary|striptags }}{% else %}{{ article.content|striptags|truncate(260, False) }}{% endif %}">
+    <meta property="og:url" content="{{ SITEURL }}/{{ article.url }}">
+    <!-- END metafacebook -->
+  {% endblock metafacebook %}
+
+  {%block metagoogle%}
+    <!-- BEGIN metagoogle -->
+    <link rel="canonical" href="{{ SITEURL }}/{{ article.url }}">
+    <!-- END metagoogle -->
+  {%endblock metagoogle%}
+  {% block metadcterms %}
+    <meta name="dcterms.title" content="{{ article.title|striptags }}">
+    <meta name="dcterms.description" content="{% if article.summary %}{{ article.summary|striptags }}{% else %}{{ article.content|striptags|truncate(260, False) }}{% endif %}">
+    <meta name="dcterms.language" content="es">
+    <meta name="dcterms.type" content="post">
+    <meta name="dcterms.source" content="{{ SITEURL }}/{{ article.url }}">
+    <meta name="dcterms.publisher" content="{{ TWITTER_USERNAME }}">
+  {% endblock metadcterms %}
+{% endif %}
+
+{% block html_head %}
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "Yo, Toledano",
+    "author": {
+      "@type": "Person",
+      "name": "{{ AUTHOR }}",
+      "image": "{{ PROFILE_IMAGE_URL }}",
+      "url": "{{ SITEURL }}",
+      "description": "{{ article.about_author|striptags }}"
+    },
+    "headline": "{{ article.title|striptags  }}",
+    "url": "{{ SITEURL }}/{{ article.url }}",
+    "datePublished": "{{ article.date|strftime('%Y-%m-%dT%H:%M:%S.%f%z') }}",
+    "dateModified": "{{ article.date|strftime('%Y-%m-%dT%H:%M:%S.%f%z') }}",
+    {% if article.cover %}
+    "image": "{{ article.cover }}",
+    {% else %}
+    "image": "{{ ARTICLE_COVER }}",
+    {% endif %}
+    "keywords": "{{ article.category.slug }}{% for tag in article.tags %} tag-{{ tag.slug }}{% endfor %}",
+    "description": "{% if article.summary %}{{ article.summary|striptags }}{% else %}{{ article.content|truncate(260, False)|striptags }}{% endif %}"
+  }
+</script>
+<style media="screen">
+  .page-title {
+    text-shadow: 1px 1px #000;
+  }
+  .xeMusicPlayer {
+    height: 150px !important;
+  }
+  .xeMusicPlayer .xeTitleBy {
+    line-height: 20px !important;
+  }
+  .xeMusicPlayer .xeCover > img {
+    height: 80px;
+  }
+  .read-next-story.prev .post:before {
+      content: "Selección del editor" !important;
+  }
+  .read-next-story .post:before {
+      content: "Siguiente artículo" !important;
+  }
+  .footnote {
+    font-size: 0.8em;
+    line-height: 1em;
+  }
+  .footnote img {
+    all: initial;
+  }
+</style>
+{% endblock html_head %}
+
+{% block header_title %}
+  <h1 class="page-title" itemprop="headline">{{ article.title }}</h1>
+  <h2 class="page-description" itemprop="description">Yo, Toledano</h2>
+{% endblock header_title %}
+
 {% block content %}
 <main id="content" class="content" role="main">
-    <article class="post" itemscope="" itemtype="http://schema.org/BlogPosting" itemprop="blogPost">
-        <header class="post-header">
-            <h1 class="post-title" itemprop="headline">{{ article.title|striptags }}</h1>
-            <section class="post-meta">
-                <time class="post-date" itemprop="datePublished" datetime="{{ article.date|strftime('%YYYY-%MM-%DD') }}">{{ article.date|strftime('%A, %B %d, %Y') }}</time>
-                on {% for tag in article.tags %}<a href="{{ tag.url }}">{{ tag.name | title }}{% if not loop.last %}, {% endif %}</a>{% endfor %}
-            </section>
-        </header>
-        <section class="post-content">
-            {{ article.content }}
-            <div>
-               <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-                <!-- bloio -->
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-7127443823639155"
-                     data-ad-slot="9038513565"
-                     data-ad-format="auto"></ins>
-                <script>
-                (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
-            <br/>
-        </section>
-        <footer class="post-footer">
-            <figure class="author-image">
-                <a class="img" href="{{ article.author.url }}" style="background-image: url('{% if article.author_pic_url %}{{ article.author_pic_url }}{% else %}{{ AUTHOR_PIC_URL }}{% endif %}')"><span class="hidden">{{ article.author }}'s Picture</span></a>
-            </figure>
-            <section class="author">
-                <h4>
-                    <a href="{{ article.author.url }}">{{ article.author.name }}</a>
-                </h4>
-                <p>{% if article.author_bio %}{{ article.author_bio }}{% else %}{{ AUTHOR_BIO }}{% endif %}</p>
-                <div class="author-meta">
-                    <span class="author-location icon-location">{% if article.location %}{{ article.location }}{% else %}{{ AUTHOR_LOCATION }}{% endif %}</span>
-                    {% if article.author_url %}<span class="author-link icon-link"><a href="{{ article.author_url }}">{{ article.author_url }}</a></span>{% endif %}
-                </div>
-            </section>
-            <section class="share">
-                <h4>Share this post</h4>
-                <a class="icon-twitter" href="https://twitter.com/share?text={{ article.title | urlencode | replace(' ', '%20') | truncate(60) }}{{ ' via @' | urlencode }}{{ TWITTER_USERNAME }}&amp;url={{ SITEURL }}/{{ article.url }}" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-                    <span class="hidden">Twitter</span>
-                </a>
-                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u={{ SITEURL }}/{{ article.url }}" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-                    <span class="hidden">Facebook</span>
-                </a>
-                <a class="icon-google-plus" href="https://plus.google.com/share?url={{ SITEURL }}/{{ article.url }}" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
-                    <span class="hidden">Google+</span>
-                </a>
-            </section>
-            {% if DISQUS_SITENAME %}
-                {% include 'coments.html' %}
-            {% endif %}
-        </footer>
-    </article>
+  <article class="post" itemscope="" itemtype="http://schema.org/BlogPosting" itemprop="blogPost">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="headline">{{ article.title|striptags }}</h1>
+      <section class="post-meta">
+        <time class="post-date" itemprop="datePublished" datetime="{{ article.date|strftime('%YYYY-%MM-%DD') }}">{{ article.date|strftime('%A, %B %d de %Y') }}</time>
+        etiquetado como {% for tag in article.tags %}<a href="{{ tag.url }}">{{ tag.name | lower }}{% if not loop.last %}, {% endif %}</a>{% endfor %}
+      </section>
+    </header>
+    <section class="post-content">
+      {{ article.content }}
+    </section>
+    <footer class="post-footer">
+      <figure class="author-image">
+        <a class="img" href="{{ article.author.url }}" style="background-image: url('{% if article.author_pic_url %}{{ article.author_pic_url }}{% else %}{{ AUTHOR_PIC_URL }}{% endif %}')"><span class="hidden">{{ article.author }}'s Picture</span></a>
+      </figure>
+      <section class="author">
+        <h4>
+          {{ article.author.name }}
+        </h4>
+        <p>{% if article.author_bio %}{{ article.author_bio }}{% else %}{{ AUTHOR_BIO }}{% endif %}</p>
+        <div class="author-meta">
+          <span class="author-location icon-location">{% if article.location %}{{ article.location }}{% else %}{{ AUTHOR_LOCATION }}{% endif %}</span>
+          {% if article.author_url %}<span class="author-link icon-link"><a href="{{ article.author_url }}">{{ article.author_url }}</a></span>{% endif %}
+        </div>
+      </section>
+      <section class="share">
+        <h4>Comparte este artículo</h4>
+        <a class="icon-twitter" href="https://twitter.com/share?text={{ article.title | urlencode | replace(' ', '%20') | truncate(60) }}{{ ' via @' | urlencode }}{{ TWITTER_USERNAME }}&amp;url={{ SITEURL }}/{{ article.url }}" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+          <span class="hidden">Twitter</span>
+        </a>
+        <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u={{ SITEURL }}/{{ article.url }}" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+          <span class="hidden">Facebook</span>
+        </a>
+        <a class="icon-google-plus" href="https://plus.google.com/share?url={{ SITEURL }}/{{ article.url }}" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+          <span class="hidden">Google+</span>
+        </a>
+      </section>
+      {% if DISQUS_SITENAME %}
+        {% include 'partials/_coments.html' %}
+      {% endif %}
+    </footer>
+  </article>
 </main>
-{% include 'neighbors.html' %}
+{% include 'partials/_neighbors.html' %}
 {% endblock %}
