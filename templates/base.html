@@ -1,37 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="utf-8">
-  <title>{% block title %}{{ SITENAME }}{% endblock title %}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{{ SITENAME }}{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
 
-  {% include "partials/_http-equiv.html" %}
-  {% include "partials/_css.html" %}
-  {% include "partials/_prefetch.html" %}
-  {% include "partials/_seo.html" %}
-  {% include "partials/_opengraph.html" %}
-  {% include "partials/_feed_rss.html" %}
-  {% include "partials/_analytics.html" %}
+    {% include "partials/_http-equiv.html" %}
+    {% include "partials/_css.html" %}
+    {% include "partials/_prefetch.html" %}
+    {% include "partials/_seo.html" %}
+    {% include "partials/_opengraph.html" %}
+    {% include "partials/_feed_rss.html" %}
+    {% include "partials/_analytics.html" %}
 
-  {% block metagoogle   %}{% endblock metagoogle   %}
-  {% block metafacebook %}{% endblock metafacebook %}
-  {% block metatwitter  %}{% endblock metatwitter  %}
-  {% block metaheader   %}{% endblock metaheader   %}
-  {% block metadcterms  %}{% endblock metadcterms  %}
-
-  <script src="//twemoji.maxcdn.com/twemoji.min.js"></script>
-  {% block html_head %}{% endblock %}
-</head>
-<body class="{% block template_type %}home-template{% endblock %} nav-closed" itemscope itemtype="http://schema.org/WebPage">
-  {% include "partials/_metaweb.html" %}
-  {% include 'partials/_navigation.html' %}
-  <div class="site-wrapper">
-    {% include "partials/_blog_title.html" %}
-    {% block content %}{% endblock content %}
-    {% include "partials/_blog_footer.html" %}
-  </div>
-  {% include "partials/_blog_js.html" %}
-  {% block js %}{% endblock %}
-</body>
+    {% block metagoogle   %}{% endblock metagoogle   %}
+    {% block metafacebook %}{% endblock metafacebook %}
+    {% block metatwitter  %}{% endblock metatwitter  %}
+    {% block metaheader   %}{% endblock metaheader   %}
+    {% block metadcterms  %}{% endblock metadcterms  %}
+    {% block html_head %}{% endblock %}
+  </head>
+  <body class="{% block template_type %}home-template{% endblock %} nav-closed" itemscope itemtype="http://schema.org/WebPage">
+    {% include "partials/_metaweb.html" %}
+    {% include 'partials/_navigation.html' %}
+    <div class="site-wrapper">
+      {% include "partials/_blog_title.html" %}
+      {% block content %}{% endblock content %}
+      {% include "partials/_blog_footer.html" %}
+    </div>
+    {% include "partials/_blog_js.html" %}
+    {% block js %}{% endblock %}
+  </body>
 </html>
