@@ -13,12 +13,11 @@
         {% else %}
           {{- article.content|striptags|truncate(260, False) -}}
         {% endif %}
-        <br>
-        <a class="read-more" itemprop="url" href="{{ SITEURL }}/{{ article.url}}" title="Sigue leyendo" rel="bookmark">Sigue leyendo &raquo;</a>
       </section>
       <footer class="post-meta">
-        <img class="author-thumb" src="{% if article.author_pic_url %}{{ article.author_pic_url }}{% else %}{{ AUTHOR_PIC_URL }}{% endif %}" alt="{{ article.author }}" nopin="nopin">
-        <a href="{{ article.author.url }}">{{ article.author }}</a> on {% for tag in article.tags %}<a href="{{ tag.url }}">{{ tag.name | title }}{% if not loop.last %}, {% endif %}</a>{% endfor %}
+        Publicado por {{ article.author }} en la categoría <strong>{{ article.category }}</strong>
+        <br>
+        Etiquetas:  {% for tag in article.tags %}<a href="{{ tag.url }}">{{ tag.name | lower }}{% if not loop.last %}, {% endif %}</a>{% endfor %}
         <time class="post-date" itemprop="datePublished" datetime="{{ article.date.isoformat() }}">{{ article.locale_date }}</time>
       </footer>
     </article>
