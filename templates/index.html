@@ -2,29 +2,10 @@
 {% block header_type %}{% endblock %}
 {% block content %}
 <main id="content" class="content" role="main" itemprop="mainContentOfPage" itemscope="" itemtype="http://schema.org/Blog">
-    <div>
-        {% include 'pagination.html' %}
-    </div>
-    {% for article in articles_page.object_list %}
-        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
-            <header class="post-header" itemprop="headline">
-                <h2 class="post-title">
-                    <a href="{{ SITEURL }}/{{ article.url }}" itemprop="url" rel="bookmark">
-                        {{ article.title|striptags }}
-                    </a>
-                </h2>
-            </header>
-            <section class="post-excerpt">
-                {{- article.summary|striptags -}}
-                <a class="read-more" itemprop="url" href="{{ SITEURL }}/{{ article.url}}" title="Read this article" rel="bookmark"> &raquo;</a>
-            </section>
-            <footer class="post-meta">
-                <img class="author-thumb" src="{% if article.author_pic_url %}{{ article.author_pic_url }}{% else %}{{ AUTHOR_PIC_URL }}{% endif %}" alt="{{ article.author }}" nopin="nopin">
-                <a href="{{ article.author.url }}">{{ article.author }}</a> on {% for tag in article.tags %}<a href="{{ tag.url }}">{{ tag.name | title }}{% if not loop.last %}, {% endif %}</a>{% endfor %}
-                <time class="post-date" itemprop="datePublished" datetime="{{ article.date.isoformat() }}">{{ article.locale_date }}</time>
-            </footer>        
-        </article>
-    {% endfor %}
-{% include 'pagination.html' %}
+  <div>
+    {% include 'partials/_pagination.html' %}
+  </div>
+  {% include "partials/_loop.html" %}
+{% include 'partials/_pagination.html' %}
 </main>
 {% endblock content %}

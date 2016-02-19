@@ -1,0 +1,24 @@
+  {% for article in articles_page.object_list %}
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+      <header class="post-header" itemprop="headline">
+        <h2 class="post-title">
+          <a href="{{ SITEURL }}/{{ article.url }}" itemprop="url" rel="bookmark">
+            {{ article.title|striptags }}
+          </a>
+        </h2>
+      </header>
+      <section class="post-excerpt">
+        {% if article.summary %}
+          {{- article.summary|striptags -}}
+        {% else %}
+          {{- article.content|truncate(260, False)|striptags -}}
+        {% endif %}
+        <a class="read-more" itemprop="url" href="{{ SITEURL }}/{{ article.url}}" title="Sigue leyendo" rel="bookmark"> &raquo;</a>
+      </section>
+      <footer class="post-meta">
+        <img class="author-thumb" src="{% if article.author_pic_url %}{{ article.author_pic_url }}{% else %}{{ AUTHOR_PIC_URL }}{% endif %}" alt="{{ article.author }}" nopin="nopin">
+        <a href="{{ article.author.url }}">{{ article.author }}</a> on {% for tag in article.tags %}<a href="{{ tag.url }}">{{ tag.name | title }}{% if not loop.last %}, {% endif %}</a>{% endfor %}
+        <time class="post-date" itemprop="datePublished" datetime="{{ article.date.isoformat() }}">{{ article.locale_date }}</time>
+      </footer>
+    </article>
+  {% endfor %}
