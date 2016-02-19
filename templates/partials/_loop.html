@@ -11,9 +11,10 @@
         {% if article.summary %}
           {{- article.summary|striptags -}}
         {% else %}
-          {{- article.content|truncate(260, False)|striptags -}}
+          {{- article.content|striptags|truncate(260, False) -}}
         {% endif %}
-        <a class="read-more" itemprop="url" href="{{ SITEURL }}/{{ article.url}}" title="Sigue leyendo" rel="bookmark"> &raquo;</a>
+        <br>
+        <a class="read-more" itemprop="url" href="{{ SITEURL }}/{{ article.url}}" title="Sigue leyendo" rel="bookmark">Sigue leyendo &raquo;</a>
       </section>
       <footer class="post-meta">
         <img class="author-thumb" src="{% if article.author_pic_url %}{{ article.author_pic_url }}{% else %}{{ AUTHOR_PIC_URL }}{% endif %}" alt="{{ article.author }}" nopin="nopin">
