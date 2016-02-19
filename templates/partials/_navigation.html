@@ -1,21 +1,21 @@
 <nav class="nav">
-    <h3 class="nav-title">Menu</h3>
+    <h3 class="nav-title">Menú</h3>
     <a href="#" class="nav-close">
-        <span class="hidden">Close</span>
+        <span class="hidden">Cerrar</span>
     </a>
     <ul role="menubar">
         {% if index %}{% set current_url = '/' %}{% endif %}
         {% if archives %}{% set current_url = '/archives' %}{% endif %}
         {% if page %}{% set current_url = page.url %}{% endif %}
-        <li class="{% if current_url == '/' %}nav-current{% endif %}" role="presentation"><a  href="{{ SITEURL }}/index.html" title="{{ SITENAME }}" itemprop="name" itemprop="significantLink">Home</a></li>
+        <li class="{% if current_url == '/' %}nav-current{% endif %}" role="presentation"><a  href="{{ SITEURL }}/index.html" title="{{ SITENAME }}" itemprop="name" itemprop="significantLink">Inicio</a></li>
         {% for p in PAGES %}
             <li class="{% if current_url == p.url %}nav-current{% endif %}" role="presentation"><a  href="{{ SITEURL }}/{{ p.url }}" title="{{ SITENAME }} |{{ p.title }}" itemprop="name" itemprop="significantLink">{{ p.title }}</a></li>
         {% endfor %}
-        {% for site_title, site_link in LINKS %}
+        {% for site_title, site_link in TEMAS %}
             <li role="presentation"><a  href="{{ site_link }}" title="{{ site_title }}" itemprop="name" itemprop="significantLink">{{ site_title }}</a></li>
         {% endfor %}
-            <li class="{% if current_url == '/archives' %}nav-current{% endif %}" role="presentation"><a  href="{{ SITEURL }}/archives.html" title="{{ SITENAME }} | Archives" itemprop="name" itemprop="significantLink">Archives</a></li>
+            <li class="{% if current_url == '/archives' %}nav-current{% endif %}" role="presentation"><a  href="{{ SITEURL }}/archives.html" title="{{ SITENAME }} | Archives" itemprop="name" itemprop="significantLink">Archivo</a></li>
     </ul>
-    {% if FEED_RSS %}<a class="subscribe-button icon-feed" href='/{{ FEED_RSS }}'  target='blank'>Subscribe</a>{% endif %}
+    {% if FEED_RSS %}<a class="subscribe-button icon-feed" href='/{{ FEED_RSS }}'  target='blank'>Suscríbete</a>{% endif %}
 </nav>
 <span class="nav-cover"></span>
