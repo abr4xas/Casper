@@ -1,0 +1,71 @@
+  {# Open Graph tags #}
+  {% if USE_OPEN_GRAPH is not defined %}
+    {% set USE_OPEN_GRAPH = False %}
+  {% endif %}
+  {% if USE_OPEN_GRAPH %}
+    {% if OPEN_GRAPH_FB_APP_ID %}
+      <meta property="fb:app_id" content="{{ OPEN_GRAPH_FB_APP_ID }}">
+    {% endif %}
+    {% if article %}
+      <link rel="dns-prefetch" href="//disqus.com"/>
+      <link rel="dns-prefetch" href="//a.disquscdn.com"/>
+      <link rel="dns-prefetch" href="//{{ DISQUS_SITENAME }}.disqus.com"/>
+      <link rel="dns-prefetch" href="//glitter-services.disqus.com"/>
+      {% if article.category %}
+        <meta property="article:section" content="{{ article.category }}">
+      {% endif %}
+      {% for tag in article.tags %}
+        <meta property="article:tag" content="{{ tag }}">
+      {% endfor %}
+      {% if article.author %}
+        <meta property="article:author" content="{{ article.author }}">
+      {% endif %}
+    {% elif page %}
+      <link rel="canonical" href="{{ page.url }}">
+      <meta property="og:type" content="article">
+      <meta property="og:title" content="{{ page.title }}">
+      <meta property="og:url" content="{{ page.url }}">
+      <meta property="og:image" content="{{ARTICLE_COVER}}">
+      <meta name="twitter:image" content="{{ARTICLE_COVER}}">
+      <meta property="og:image:type" content="image/png">
+      <meta property="og:image:width" content="1200">
+      <meta property="og:image:height" content="675">
+      <meta name="dcterms.title" content="{{ page.title }}">
+      <meta name="dcterms.description" content="{{ SITE_DESCRIPTION }}">
+      <meta name="dcterms.language" content="es">
+      <meta name="dcterms.type" content="page">
+      <meta name="dcterms.source" content="{{ page.url }}">
+      <meta name="dcterms.publisher" content="{{ AUTHOR }}">
+    {% else %}
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:site" content="@{{ TWITTER_USERNAME }}">
+      <meta property="og:site_name" content="{{ SITENAME }}">
+      <meta property="og:locale" content="{{ SITE_LANG }}">
+      <meta property="og:locale:alternate" content="{{ SITE_LANG_ALTERNATE }}">
+      <meta property="og:type" content="website">
+      <meta property="og:title" content="{{ SITENAME }}">
+      <meta property="og:url" content="{{ SITEURL }}">
+      <meta property="og:description" content="{{ SITE_DESCRIPTION }}">
+      <link rel="canonical" href="{{ SITEURL }}">
+      <meta property="og:image" content="{{ARTICLE_COVER}}">
+      <meta name="twitter:image" content="{{ARTICLE_COVER}}">
+      <meta property="og:image:type" content="image/png">
+      <meta property="og:image:width" content="1200">
+      <meta property="og:image:height" content="675">
+      <meta name="description" content="{{ SITE_DESCRIPTION }}">
+      <meta name="dcterms.title" content="{{ SITENAME }}">
+      <meta name="dcterms.description" content="{{ SITE_DESCRIPTION }}">
+      <meta name="dcterms.language" content="es">
+      <meta name="dcterms.type" content="frontpage">
+      <meta name="dcterms.identifier" content="0">
+      <meta name="dcterms.source" content="{{ SITEURL }}">
+      <meta name="dcterms.publisher" content="{{ AUTHOR }}">
+      {% if OPEN_GRAPH_IMAGE %}
+        <meta property="og:image" content="{{ARTICLE_COVER}}">
+        <meta name="twitter:image" content="{{ARTICLE_COVER}}">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="675">
+      {% endif %}
+    {% endif %}
+  {% endif %}

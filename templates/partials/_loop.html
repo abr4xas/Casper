@@ -1,0 +1,24 @@
+  {% for article in articles_page.object_list %}
+    <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+      <header class="post-header" itemprop="headline">
+        <h2 class="post-title">
+          <a href="{{ SITEURL }}/{{ article.url }}" itemprop="url" rel="bookmark">
+            {{ article.title|striptags }}
+          </a>
+        </h2>
+      </header>
+      <section class="post-excerpt">
+        {% if article.summary %}
+          {{- article.summary|striptags -}}
+        {% else %}
+          {{- article.content|striptags|truncate(260, False) -}}
+        {% endif %}
+      </section>
+      <footer class="post-meta">
+        Publicado por {{ article.author }} en la categoría <strong><a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category }}</a></strong>
+        <br>
+        <strong>Etiquetas:</strong>  {% for tag in article.tags %}<a href="{{ tag.url }}">{{ tag.name | lower }}{% if not loop.last %}, {% endif %}</a>{% endfor %}
+        <time class="post-date" itemprop="datePublished" datetime="{{ article.date.isoformat() }}">{{ article.locale_date }}</time>
+      </footer>
+    </article>
+  {% endfor %}

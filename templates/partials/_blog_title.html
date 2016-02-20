@@ -1,0 +1,26 @@
+<header class="main-header post-head" style="background-image: url('{% block header_image %}{{ COVER_IMG }}{% endblock %}');" itemscope itemtype="http://schema.org/WPHeader">
+  <nav class="main-nav overlay clearfix">
+    {% if SITELOGO %}
+      <a href="{{ SITEURL }}/index.html" class="blog-logo">
+        <img src="{{ SITELOGO }}" alt="{{ SITENAME }}">
+      </a>
+    {% endif %}
+    <a class="menu-button" href="#">
+      <span class="burger">&#9776;</span>
+      <span class="word">Menú</span>
+    </a>
+  </nav>
+  <div class="vertical">
+    <div class="main-header-content inner">
+      {% block header_title %}
+        <h1 class="page-title" itemprop="headline">{{ SITENAME }}</h1>
+        <h2 class="page-description" itemprop="description">{{TAGLINE}}</h2>
+      {% endblock header_title %}
+    </div>
+  </div>
+  {% block scroll %}
+    <a class="scroll-down icon-arrow-left blink_me" href="#content" data-offset="-45">
+        <span class="hidden">Scroll Down</span>
+    </a>
+  {% endblock %}
+</header>
