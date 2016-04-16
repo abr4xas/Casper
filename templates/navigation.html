@@ -14,7 +14,10 @@
         {% for site_title, site_link in LINKS %}
             <li role="presentation"><a  href="{{ site_link }}" title="{{ site_title }}" itemprop="name" itemprop="significantLink">{{ site_title }}</a></li>
         {% endfor %}
-            <li class="{% if current_url == '/archives' %}nav-current{% endif %}" role="presentation"><a  href="{{ SITEURL }}/archives.html" title="{{ SITENAME }} | Archives" itemprop="name" itemprop="significantLink">Archives</a></li>
+        <li class="{% if current_url == '/archives' %}nav-current{% endif %}" role="presentation"><a  href="{{ SITEURL }}/archives.html" title="{{ SITENAME }} | Archives" itemprop="name" itemprop="significantLink">Archives</a></li>
+        {% for category, articles in categories %}
+            <li class="{% if current_url == category.url %}nav-current{% endif %}" role="presentation"><a  href="{{ SITEURL }}/{{ category.url }}" title="{{ SITENAME }} |{{ category.title }}" itemprop="name" itemprop="significantLink">{{ category.name }}</a></li>
+        {% endfor %}
     </ul>
     {% if FEED_RSS %}<a class="subscribe-button icon-feed" href='{{ SITEURL }}/{{ FEED_ALL_ATOM }}'  target='blank'>Subscribe</a>{% endif %}
 </nav>
